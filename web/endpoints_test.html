@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Server Test</title>
+    <script>
+        // Function to test the GET request
+        function testGetRequest() {
+            fetch("/getEndpointExample")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("get-result").innerText = JSON.stringify(data);
+                })
+                .catch(error => {
+                    console.error("Error with GET request:", error);
+                });
+        }
+
+        // Function to test the POST request
+        function testPostRequest() {
+            const data = { key: "value" }; // Example payload for POST
+            fetch("/postEndpointExample", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("post-result").innerText = JSON.stringify(data);
+            })
+            .catch(error => {
+                console.error("Error with POST request:", error);
+            });
+        }
+
+        // Function to connect to the SSE (Server-Sent Events) endpoint
+        function connectSSE() {
+            const eventSource = new EventSource("/events/");
+            eventSource.onmessage = function(event) {
+                const newEvent = document.createElement("p");
+                newEvent.innerText = "SSE: " + event.data;
+                document.getElementById("sse-result").appendChild(newEvent);
+            };
+
+            eventSource.onerror = function(event) {
+                console.error("SSE error", event);
+            };
+        }
+
+        // Function to send a broadcast message via the POST broadcast endpoint
+        function sendBroadcast() {
+            const broadcastData = {
+                message: "Hello from the broadcast endpoint!"
+            };
+
+            fetch("/broadcastSseExample", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(broadcastData),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("broadcast-result").innerText = JSON.stringify(data);
+            })
+            .catch(error => {
+                console.error("Error with Broadcast POST request:", error);
+            });
+        }
+    </script>
+</head>
+<body>
+    <h1>Python Server Functionality Tests</h1>
+
+    <!-- Section to test the GET endpoint -->
+    <h2>Test GET Endpoint</h2>
+    <button onclick="testGetRequest()">Test GET Request</button>
+    <p>Response: <span id="get-result"></span></p>
+
+    <!-- Section to test the POST endpoint -->
+    <h2>Test POST Endpoint</h2>
+    <button onclick="testPostRequest()">Test POST Request</button>
+    <p>Response: <span id="post-result"></span></p>
+
+    <!-- Section to test Server-Sent Events (SSE) -->
+    <h2>Test Server-Sent Events (SSE)</h2>
+    <button onclick="connectSSE()">Connect to SSE</button>
+    <div id="sse-result">
+        <p>No SSE events received yet...</p>
+    </div>
+
+    <!-- Section to test the broadcast functionality -->
+    <h2>Test Broadcast Endpoint</h2>
+    <button onclick="sendBroadcast()">Send Broadcast Message</button>
+    <p>Response: <span id="broadcast-result"></span></p>
+
+</body>
+</html>
