@@ -23,22 +23,25 @@ def change_gamestate_phase(command: Command, partyId: str) -> List[GamestateChan
     phase_name = command.targetIds[0]
 
     if phase_name == ENUMGamestatePhases.INACTIVE.value:
+        gamestate_controller.phase_inactive_controller.start_inactive_phase(gamestate)
         change = GamestateChange("", GamestateChange.Type.CHANGED_GAMESTATE_PHASE.value)     
         change.targetIds.append(phase_name)   
         return [change,]     
 
     if phase_name == ENUMGamestatePhases.LOBBY.value:
+        gamestate_controller.phase_lobby_controller.start_lobby_phase(gamestate)
         change = GamestateChange("", GamestateChange.Type.CHANGED_GAMESTATE_PHASE.value)     
         change.targetIds.append(phase_name)   
         return [change,]       
 
     if phase_name == ENUMGamestatePhases.EXPLORATION.value:
+        gamestate_controller.phase_exploration_controller.start_exploration_phase(gamestate)
         change = GamestateChange("", GamestateChange.Type.CHANGED_GAMESTATE_PHASE.value)     
         change.targetIds.append(phase_name)   
         return [change,]              
 
     if phase_name == ENUMGamestatePhases.TACTICAL.value:
-        gamestate_controller.phase_tatical_controller.start_tactical_phase(gamestate)
+        gamestate_controller.phase_tactical_controller.start_tactical_phase(gamestate)
         change = GamestateChange("", GamestateChange.Type.CHANGED_GAMESTATE_PHASE.value)     
         change.targetIds.append(phase_name)   
         return [change,]  

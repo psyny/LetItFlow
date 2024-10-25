@@ -24,7 +24,7 @@ def remove_from_tactical(command: Command, partyId: str) -> List[GamestateChange
     old_turn_order = copy.deepcopy(gamestate.get_turn_order())
 
     # Execute command
-    gamestate_controller.phase_tatical_controller.remove_from_tactical(gamestate, command.targetIds)
+    gamestate_controller.phase_tactical_controller.remove_from_tactical(gamestate, command.targetIds)
 
     # Get new
     current_in_tactical = copy.deepcopy(gamestate.get_in_tactical())

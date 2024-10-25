@@ -20,7 +20,7 @@ class TestGamestateControllerTactical(unittest.TestCase):
         party = create_mock_party1()
         gamestate = party.get_gamestate()
         gamestate_controller = AppController().gamestate_controller
-        gamestate_controller.phase_tatical_controller.start_tactical_phase(gamestate)
+        gamestate_controller.phase_tactical_controller.start_tactical_phase(gamestate)
 
         # Configure initiative and gamestate        
         instanceIds = [] # also the current turn order
@@ -31,10 +31,10 @@ class TestGamestateControllerTactical(unittest.TestCase):
             instanceIds.append(instanceId)
 
         # Add every instance to tactical mode        
-        gamestate_controller.phase_tatical_controller.add_to_tactical(gamestate, instanceIds)
+        gamestate_controller.phase_tactical_controller.add_to_tactical(gamestate, instanceIds)
 
         # Add to turn order
-        gamestate_controller.phase_tatical_controller.add_to_turn_order(gamestate, instanceIds)
+        gamestate_controller.phase_tactical_controller.add_to_turn_order(gamestate, instanceIds)
 
         return party, gamestate   
 
@@ -54,7 +54,7 @@ class TestGamestateControllerTactical(unittest.TestCase):
         instanceId = turnOrder[2]
 
         # Remove from turn order
-        gamestate_controller.phase_tatical_controller.remove_from_turn_order(gamestate, [instanceId,])
+        gamestate_controller.phase_tactical_controller.remove_from_turn_order(gamestate, [instanceId,])
 
         # Asset - Unit was removed        
         new_turn_order = gamestate.get_turn_order()
@@ -73,7 +73,7 @@ class TestGamestateControllerTactical(unittest.TestCase):
         party = create_mock_party1()
         gamestate = party.get_gamestate()
         gamestate_controller = AppController().gamestate_controller
-        gamestate_controller.phase_tatical_controller.start_tactical_phase(gamestate)
+        gamestate_controller.phase_tactical_controller.start_tactical_phase(gamestate)
 
         # Configure initiative and gamestate        
         instanceIds = [] # also the current turn order
@@ -84,13 +84,13 @@ class TestGamestateControllerTactical(unittest.TestCase):
             instanceIds.append(instanceId)
 
         # Add every instance to tactical mode        
-        gamestate_controller.phase_tatical_controller.add_to_tactical(gamestate, instanceIds)
+        gamestate_controller.phase_tactical_controller.add_to_tactical(gamestate, instanceIds)
 
         # Add one by one, in any order
-        gamestate_controller.phase_tatical_controller.add_to_turn_order(gamestate, [instanceIds[2],])
-        gamestate_controller.phase_tatical_controller.add_to_turn_order(gamestate, [instanceIds[3],])
-        gamestate_controller.phase_tatical_controller.add_to_turn_order(gamestate, [instanceIds[0],])
-        gamestate_controller.phase_tatical_controller.add_to_turn_order(gamestate, [instanceIds[1],])
+        gamestate_controller.phase_tactical_controller.add_to_turn_order(gamestate, [instanceIds[2],])
+        gamestate_controller.phase_tactical_controller.add_to_turn_order(gamestate, [instanceIds[3],])
+        gamestate_controller.phase_tactical_controller.add_to_turn_order(gamestate, [instanceIds[0],])
+        gamestate_controller.phase_tactical_controller.add_to_turn_order(gamestate, [instanceIds[1],])
 
 
         # Assert - Turn sorting worked
@@ -107,7 +107,7 @@ class TestGamestateControllerTactical(unittest.TestCase):
 
         # Delay turn
         original_turn_order = copy.deepcopy(gamestate.get_turn_order())
-        gamestate_controller.phase_tatical_controller.change_turn_order(gamestate, original_turn_order[0], original_turn_order[3])
+        gamestate_controller.phase_tactical_controller.change_turn_order(gamestate, original_turn_order[0], original_turn_order[3])
 
         # Asserts
         new_turn_order = gamestate.get_turn_order()
@@ -115,7 +115,7 @@ class TestGamestateControllerTactical(unittest.TestCase):
         self.assertEqual(new_turn_order, new_turn_order_manual)
         
         # Delay turn - Again
-        gamestate_controller.phase_tatical_controller.change_turn_order(gamestate, original_turn_order[1], original_turn_order[3])
+        gamestate_controller.phase_tactical_controller.change_turn_order(gamestate, original_turn_order[1], original_turn_order[3])
 
         # Asserts
         new_turn_order = gamestate.get_turn_order()

@@ -22,7 +22,7 @@ def add_to_tactical(command: Command, partyId: str) -> List[GamestateChange]:
     old_in_tactical = copy.deepcopy(gamestate.get_in_tactical())
 
     # Execute command
-    gamestate_controller.phase_tatical_controller.add_to_tactical(gamestate, command.targetIds)
+    gamestate_controller.phase_tactical_controller.add_to_tactical(gamestate, command.targetIds)
 
     # Get new inTactical
     current_in_tactical = copy.deepcopy(gamestate.get_in_tactical())

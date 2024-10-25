@@ -22,7 +22,7 @@ def remove_from_turn_order(command: Command, partyId: str) -> List[GamestateChan
     old_turn_order = copy.deepcopy(gamestate.get_turn_order())
 
     # Execute command
-    gamestate_controller.phase_tatical_controller.remove_from_turn_order(gamestate, command.targetIds)
+    gamestate_controller.phase_tactical_controller.remove_from_turn_order(gamestate, command.targetIds)
 
     # Get new turn order
     new_turn_order = copy.deepcopy(gamestate.get_turn_order())

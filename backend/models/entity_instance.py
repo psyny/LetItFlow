@@ -10,8 +10,10 @@ class EntityInstance:
         self.label: str = ""
         self.stats: Dict[str, any] = {
             'hp': 0,
-            'tempHp': 0,
+            'temp_hp': 0,
             'initiative': 0, # Rolled initative, with the dex mod 
+            'death_rolls_successes': 0,
+            'death_rolls_fails': 0,
             'ally': False,
             'visible': True,
             'conditions': []  # List of conditions (represented as dicts)
@@ -36,9 +38,9 @@ class EntityInstance:
         """Get the hp stat of the entityInstance."""
         return self.stats["hp"]
 
-    def get_tempHp(self) -> int:
-        """Get the tempHp stat of the entityInstance."""
-        return self.stats["tempHp"]
+    def new_temp_hp(self) -> int:
+        """Get the temp_hp stat of the entityInstance."""
+        return self.stats["temp_hp"]
 
     def get_initiative(self) -> int:
         """Get the initiative stat of the entityInstance."""
@@ -51,15 +53,18 @@ class EntityInstance:
     def get_visible(self) -> bool:
         """Check if the entityInstance is visible."""
         return self.stats["visible"]
+    
+    def get_death_rolls(self) -> tuple[int, int]:
+        return self.stats["death_rolls_successes"], self.stats["death_rolls_fails"]    
 
     # Setters for base stats
     def set_hp(self, new_hp: int):
         """Update the hp stat of the entityInstance."""
         self.stats["hp"] = new_hp
 
-    def set_tempHp(self, new_tempHp: int):
-        """Update the tempHp stat of the entityInstance."""
-        self.stats["tempHp"] = new_tempHp
+    def set_temp_hp(self, new_temp_hp: int):
+        """Update the temp_hp stat of the entityInstance."""
+        self.stats["temp_hp"] = new_temp_hp
 
     def set_initiative(self, new_initiative: int):
         """Update the initiative stat of the entityInstance."""
@@ -72,6 +77,12 @@ class EntityInstance:
     def set_visible(self, visible: bool):
         """Update the visibility of the entityInstance."""
         self.stats["visible"] = visible
+
+    def inc_death_rolls(self, success: bool) -> bool:
+        if success == True:
+            self.stats["death_rolls_successes"] += 1
+        else:
+            self.stats["death_rolls_fails"] += 1
 
     # Methods to manage conditions
     def add_condition(self, condition: Dict):
