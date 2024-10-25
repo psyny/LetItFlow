@@ -1,0 +1,1 @@
+{"entityId": "entity2", "playerId": "player2", "type": "creature", "name": "Mock Entity 2", "label": "002", "active": true, "imageName": "entity2.png", "baseStats": {"hp": 80, "initiative": 12, "dex": 6}}

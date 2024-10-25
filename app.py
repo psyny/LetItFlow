@@ -4,8 +4,7 @@ import webbrowser
 import json
 import uuid
 
-HostName = "localhost"
-HostPort = 8080
+from backend.libs.psn.appconfig.appconfig import AppConfig
 
 class ServerController(SimpleHTTPRequestHandler):   
     sseClients = dict()
@@ -162,8 +161,12 @@ class ThreadedTCPServer(ThreadingTCPServer):
 
 # Start APP
 if __name__ == '__main__':
-    with ThreadedTCPServer((HostName, HostPort), ServerController) as server:
-        server_address = f"http://{HostName}:{HostPort}"
+    # Load external appconfig
+    appConfig = AppConfig()
+
+    # Start server
+    with ThreadedTCPServer((appConfig.get("hostname"), appConfig.get("hostport")), ServerController) as server:
+        server_address = f"http://{appConfig.get('hostname')}:{appConfig.get('hostport')}"
         print(f"Server started: {server_address}")
         webbrowser.open(server_address)
         try:

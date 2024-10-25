@@ -1,0 +1,6 @@
+{
+    "hostname": "localhost",
+    "hostport": 8080,
+    "repopath": "db",
+    "persistdata": false
+}
