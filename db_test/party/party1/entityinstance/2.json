@@ -1,1 +1,1 @@
-{"instanceId": "2", "entityId": "entity3", "playerId": "", "label": "003", "stats": {"hp": 85, "tempHp": 0, "initiative": 15, "ally": false, "visible": true, "conditions": []}, "seed": 81, "healthPoint1": 36, "healthPoint2": 64}
+{"instanceId": "2", "entityId": "entity3", "playerId": "", "label": "003", "stats": {"hp": 85, "temp_hp": 0, "initiative": 15, "death_rolls_successes": 0, "death_rolls_fails": 0, "ally": false, "visible": true, "conditions": []}, "seed": 18, "healthPoint1": 31, "healthPoint2": 59}

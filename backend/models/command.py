@@ -3,8 +3,16 @@ from enum import Enum
 
 class Command:
     class Type(Enum):
-        # Basic Types
+        # Basic Commands
         CHANGE_GAMESTATE_PHASE = "change_gamestate_phase"
+
+        # Phase - Exploration
+        ADD_TO_EXPLORATION = "add_to_exploration"
+        REMOVE_FROM_EXPLORATION = "remove_from_exploration"
+        ADD_PLACE = "add_place"
+        REMOVE_PLACE = "remove_place"
+        ADD_TO_PLACE = "add_to_place"
+        REMOVE_FROM_PLACE = "remove_from_place"
 
         # Phase - Tactical
         ADD_TO_TACTICAL = "add_to_tactical"

@@ -19,7 +19,13 @@ class Gamestate:
         self.entities: Dict[str, Entity] = {}  # Map of entityId to Entity objects
         self.entityInstances: Dict[str, EntityInstance] = {}  # Map of instanceId to EntityInstance objects
         self.phase: str = 'inactive'  # Default phase is inactive
-        self.inactive: Dict[str, Optional[str]] = {'title': None}
+
+        self.inactive: Dict[str, any] = {
+            'title': None
+            }        
+        self.lobby: Dict[str, any] = {
+            'title': None
+            }        
         self.tactical: Dict[str, any] = {
             'inTactical':  {},
             'initiativeScore': {},
@@ -27,8 +33,11 @@ class Gamestate:
             'turnOrder': [],
             'currentTurn': ""
         }
-        self.exploration: Dict[str, str] = {'places': {}}
-        self.lobby: Dict[str, Optional[str]] = {'title': None}
+        self.exploration: Dict[str, any] = {
+            'in_exploration': {},
+            'places': {},
+            }
+        
         self.vfxs: List[Vfx] = []  # List of active Vfx objects
 
     # Entity Management

@@ -3,8 +3,16 @@ from enum import Enum
 
 class GamestateChange:
     class Type(Enum):
-        # Basic
-        CHANGED_GAMESTATE_PHASE = "changed_gamestate_phase" 
+        # Basic Changes
+        CHANGED_GAMESTATE_PHASE = "changed_gamestate_phase"         
+
+        # Gamestate - Exploration
+        ADDED_TO_EXPLORATION = "added_to_exploration"
+        REMOVED_FROM_EXPLORATION = "removed_from_exploration"
+        ADDED_PLACE = "added_place"
+        REMOVED_PLACE = "removed_place"
+        ADDED_TO_PLACE = "added_to_place"
+        REMOVED_FROM_PLACE = "removed_from_place"
 
         # Gamestate - Tactical
         ADDED_TO_TACTICAL = "added_to_tactical"
