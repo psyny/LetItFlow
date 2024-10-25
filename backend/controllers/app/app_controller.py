@@ -3,6 +3,7 @@ from backend.controllers.credentials.credentials_controller import CredentialsCo
 from backend.controllers.player.player_controller import PlayerController
 from backend.controllers.party.party_controller import PartyController
 from backend.controllers.entity.entity_controller import EntityController
+from backend.controllers.gamestate.gamestate_controller import GamestateController
 
 class AppController:
     _instance = None
@@ -24,6 +25,7 @@ class AppController:
         self.playercontroller: PlayerController = PlayerController(self.repository)
         self.partycontroller: PartyController = PartyController(self.repository)
         self.entity_controller: EntityController = EntityController(self.repository, self.partycontroller)
+        self.gamestate_controller: GamestateController = GamestateController()
 
         
 

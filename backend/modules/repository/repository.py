@@ -138,10 +138,10 @@ class Repository:
             return True
                                         
         party_folder = self.parties_folder + [partyId]
-        gamestate_file = party_folder + ["gamestate.json"]
+        gamestate_file = "gamestate.json"
 
         # Save the main gamestate file, excluding entities and entityInstances
-        FileManager.saveJsonFile(gamestate.to_primitive(), "gamestate.json", party_folder)
+        FileManager.saveJsonFile(gamestate.to_primitive(), gamestate_file, party_folder)
 
         # Save entities and entityInstances separately
         for entity in gamestate.entities.values():

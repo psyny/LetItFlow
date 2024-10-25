@@ -4,7 +4,17 @@ from enum import Enum
 class Command:
     class Type(Enum):
         # Basic Types
+        CHANGE_GAMESTATE_PHASE = "change_gamestate_phase"
+
+        # Phase - Tactical
+        ADD_TO_TACTICAL = "add_to_tactical"
+        REMOVE_FROM_TACTICAL = "remove_from_tactical"
         ADD_TO_TURN_ORDER = "add_to_turn_order"
+        REMOVE_FROM_TURN_ORDER = "remove_from_turn_order"
+        CHANGE_TURN_ORDER = "change_from_turn_order"
+
+        
+
 
     def __init__(self, commandType: str):
         """Initialize the Action object with immutable actionId."""

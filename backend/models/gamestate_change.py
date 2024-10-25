@@ -3,8 +3,14 @@ from enum import Enum
 
 class GamestateChange:
     class Type(Enum):
-        # Basic Types
+        # Basic
+        CHANGED_GAMESTATE_PHASE = "changed_gamestate_phase" 
+
+        # Gamestate - Tactical
+        ADDED_TO_TACTICAL = "added_to_tactical"
+        REMOVED_FROM_TACTICAL = "removed_from_tactical"
         ADDED_TO_TURN_ORDER = "added_to_turn_order"
+        REMOVED_FROM_TURN_ORDER = "removed_from_turn_order"
         CHANGED_IN_TURN_ORDER = "changed_in_turn_order"
 
     def __init__(self, changeId: str, changeType: str):

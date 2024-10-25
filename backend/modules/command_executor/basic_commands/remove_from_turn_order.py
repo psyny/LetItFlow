@@ -9,7 +9,7 @@ from backend.modules.utils.app_utils import AppUtils
 
 from backend.modules.command_executor.utils.utils import get_gamestate_tactical_turn_order_changes
 
-def add_to_turn_order(command: Command, partyId: str) -> List[GamestateChange]:
+def remove_from_turn_order(command: Command, partyId: str) -> List[GamestateChange]:
     """
     ...
     """
@@ -22,7 +22,7 @@ def add_to_turn_order(command: Command, partyId: str) -> List[GamestateChange]:
     old_turn_order = copy.deepcopy(gamestate.get_turn_order())
 
     # Execute command
-    gamestate_controller.phase_tatical_controller.add_to_turn_order(gamestate, command.targetIds)
+    gamestate_controller.phase_tatical_controller.remove_from_turn_order(gamestate, command.targetIds)
 
     # Get new turn order
     new_turn_order = copy.deepcopy(gamestate.get_turn_order())

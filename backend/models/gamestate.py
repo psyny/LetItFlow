@@ -1,6 +1,5 @@
 from enum import Enum
 from typing import Dict, List, Optional
-import random
 
 from backend.models.entity import Entity
 from backend.models.entity_instance import EntityInstance
@@ -70,16 +69,6 @@ class Gamestate:
         self.inactive['title'] = title
 
     # Tactical Phase Management
-    def start_tactical_phase(self):
-        self.tactical: Dict[str, any] = {
-            'inTactical':  {},
-            'initiativeScore': {},
-            'randomTickets': [],
-            'turnOrder': [],
-            'currentTurn': ""
-        }        
-        self.generate_random_tickets()
-
     def add_to_tactical(self, instanceId: str):
         """Add an EntityInstance to the tactical mode."""
         self.tactical['inTactical'][instanceId] = True
@@ -109,20 +98,6 @@ class Gamestate:
     def get_initiative_scores(self) -> Dict:
         return self.tactical['initiativeScore']
     
-    def generate_initiative_score_val(self, rolledScore: int, dexMod: int) -> int:
-        # Generate a random ticket value (should be between 0 and 99 inclusive)
-        ticketsLeft = len(self.tactical['randomTickets'])
-        if ticketsLeft == 0:
-            return 0
-        
-        ticketIdx = random.randint(0, ticketsLeft - 1)
-        ticketVal = self.tactical['randomTickets'][ticketIdx]
-        self.tactical['randomTickets'].pop(ticketIdx)
-
-        # Build the score
-        score = (rolledScore * 10000) + (dexMod + 100) + (ticketVal)
-        return score
-    
     def set_initiative_score(self, instanceId: str, currentScore: int, untier: int, rolledScore: int):
         self.tactical['initiativeScore'][instanceId] = {
             "instanceId": instanceId,
@@ -131,8 +106,9 @@ class Gamestate:
             "rolledScore": rolledScore,
         }
 
-    def generate_random_tickets(self):
-        self.tactical['randomTickets'] = [i for i in range(100)]
+    def remove_initiative_score(self, instanceId: str):
+        if instanceId in self.tactical['initiativeScore']:
+            del self.tactical['initiativeScore'][instanceId]
 
     # Exploration Phase Management
     def add_exploration_place(self, place: str, instanceId: str):
