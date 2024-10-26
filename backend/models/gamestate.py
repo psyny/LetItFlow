@@ -6,10 +6,10 @@ from backend.models.entity_instance import EntityInstance
 from backend.models.vfx import Vfx
 
 class ENUMGamestatePhases(Enum):
-        INACTIVE = "inactive"
-        LOBBY = "lobby"
-        EXPLORATION = "exploration"
-        TACTICAL = "tactical"
+    INACTIVE = "inactive"
+    LOBBY = "lobby"
+    EXPLORATION = "exploration"
+    TACTICAL = "tactical"
 
 class Gamestate:
     def __init__(self, partyId: str, partyName: str):

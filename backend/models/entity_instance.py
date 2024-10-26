@@ -1,5 +1,13 @@
+from enum import Enum
 import random
 from typing import Dict, List, Optional
+
+class ENUMDisplayLevel(Enum):
+    COMPLETE = "complete" # Full resource and stats sheet disclosure
+    TACTICAL = "tactical" # Numerical HP values, name, conditions
+    IMMERSIVE = "immersive" # Categorical HP values, name, conditions        
+    MINIMUM = "minimum" # No HP. Just name and conditions
+    INCOGNITO = "incognito" # No HP, no picture, no name, just the existance
 
 class EntityInstance:
     def __init__(self, instanceId: str, entityId: str):
@@ -22,6 +30,7 @@ class EntityInstance:
         self.seed: int = random.randint(0, 100)  # Random number between 0 and 100
         self.healthPoint1: int = random.randint(20, 45)  # Random number between 20 and 45
         self.healthPoint2: int = random.randint(55, 80)  # Random number between 55 and 80
+        self.display_level: str = ENUMDisplayLevel.MINIMUM.value
 
     @property
     def instanceId(self) -> str:
@@ -106,7 +115,8 @@ class EntityInstance:
             "stats": self.stats,
             "seed": self.seed,
             "healthPoint1": self.healthPoint1,
-            "healthPoint2": self.healthPoint2
+            "healthPoint2": self.healthPoint2,
+            "display_level": self.display_level
         }
 
     # Create from a primitive dictionary
@@ -124,5 +134,6 @@ class EntityInstance:
         entityInstance.seed = data.get("seed", entityInstance.seed) 
         entityInstance.healthPoint1 = data.get("healthPoint1", entityInstance.healthPoint1)
         entityInstance.healthPoint2 = data.get("healthPoint2", entityInstance.healthPoint2)
+        entityInstance.display_level = data.get("display_level", entityInstance.display_level)
 
         return entityInstance
