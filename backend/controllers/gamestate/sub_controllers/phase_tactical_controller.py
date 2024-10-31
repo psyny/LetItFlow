@@ -2,9 +2,11 @@ from typing import Dict, List, Optional
 import random
 
 from backend.models.gamestate import Gamestate
+from backend.models.gamestate import ENUMGamestatePhases
 
 class PhaseTacticalController:
     def start_tactical_phase(self, gamestate: Gamestate) -> bool:
+        gamestate.phase = ENUMGamestatePhases.TACTICAL.value
         gamestate.tactical = {
             'inTactical':  {},
             'initiativeScore': {},
