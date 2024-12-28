@@ -26,7 +26,7 @@ class TestGamestateControllerTactical(unittest.TestCase):
         instanceIds = [] # also the current turn order
         init = 10
         for instanceId, instance in gamestate.get_entity_instances().items():
-            instance.set_initiative(init)
+            instance.set_stat("initiative", init)
             init += 1
             instanceIds.append(instanceId)
 
@@ -79,7 +79,7 @@ class TestGamestateControllerTactical(unittest.TestCase):
         instanceIds = [] # also the current turn order
         init = 10
         for instanceId, instance in gamestate.get_entity_instances().items():
-            instance.set_initiative(init)
+            instance.set_stat("initiative", init)
             init += 1
             instanceIds.append(instanceId)
 

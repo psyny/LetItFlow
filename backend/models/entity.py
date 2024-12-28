@@ -1,9 +1,16 @@
 from typing import Dict, Optional
+import copy
+
+ExpectedStats = {
+    "hp": True,
+    "initiative": True,
+    "dex": True,
+}
 
 class Entity:
     def __init__(self, entityId: str, playerId: Optional[str] = None, entityType: Optional[str] = None, 
                  name: Optional[str] = None, label: Optional[str] = None, active: bool = False, 
-                 imageName: Optional[str] = None, baseStats: Optional[Dict[str, int]] = None):
+                 imageName: Optional[str] = None, stats: Optional[Dict[str, int]] = None):
         """Initialize the Entity object with immutable entityId."""
         self._entityId = entityId  # Entity ID is fixed and immutable
         self.playerId: Optional[str] = playerId
@@ -12,7 +19,11 @@ class Entity:
         self.label: Optional[str] = label
         self.active: bool = active
         self.imageName: Optional[str] = imageName
-        self.baseStats: Dict[str, int] = baseStats if baseStats else {'hp': 0, 'initiative': 0, 'dex': 0}
+        self.stats: Dict[str, int] = stats if stats else {
+            'hp': 0, 
+            'initiative': 0, 
+            'dex': 0,
+        }
 
     @property
     def entityId(self) -> str:
@@ -43,31 +54,66 @@ class Entity:
         """Update the entity's image name."""
         self.imageName = new_imageName
 
+    # Gets
+    def get_playerId(self) -> str:
+        """Retrieve the entity's playerId."""
+        return self.playerId
+
+    def get_type(self) -> str:
+        """Retrieve the entity's type."""
+        return self.type
+
+    def get_name(self) -> str:
+        """Retrieve the entity's name."""
+        return self.name
+
+    def get_label(self) -> str:
+        """Retrieve the entity's label."""
+        return self.label
+
+    def get_active(self) -> bool:
+        """Retrieve the entity's active status."""
+        return self.active
+
+    def get_imageName(self) -> str:
+        """Retrieve the entity's image name."""
+        return self.imageName
+    
     # Individual methods for updating base stats
-    def set_hp(self, new_hp: int):
-        """Update the hp stat of the entity."""
-        self.baseStats['hp'] = new_hp
+    def set_stat(self, statName: str, value: any) -> tuple[any, bool, bool]:
+        """Set Any Stat, returns curr value, exptected, and success state"""
+        expected = ExpectedStats.get(statName, False)
+        
+        self.stats[statName] = value
+        return value, expected, True
 
-    def set_initiative(self, new_initiative: int):
-        """Update the initiative stat of the entity."""
-        self.baseStats['initiative'] = new_initiative
+    def add_stat(self, statName: str, value: any) -> tuple[any, bool, bool]:
+        """Add to a stat, returns new value, exptected, and success state"""
+        expected = ExpectedStats.get(statName, False)
 
-    def set_dex(self, new_dex: int):
-        """Update the dex stat of the entity."""
-        self.baseStats['dex'] = new_dex
+        currValue = self.stats.get(statName, 0)
+        newValue = currValue
 
-    # Individual methods for get base stats
-    def get_hp(self,):
-        """Update the hp stat of the entity."""
-        return self.baseStats['hp']
+        try:
+            newValue += value
+        except TypeError:
+            return 0, expected, False
+        
+        self.stats[statName] = newValue
+        return newValue, expected, True
+    
+    def get_stat(self, statName: str) -> tuple[any, bool, bool]:
+        """Get Any Stat, returns curr value, exptected, and existing state"""
+        expected = ExpectedStats.get(statName, False)
 
-    def get_initiative(self):
-        """Update the initiative stat of the entity."""
-        return self.baseStats['initiative']
+        value = self.stats.get(statName)
+        if value:
+            exists = True
+        else:
+            exists = False
+            value = 0
 
-    def get_dex(self):
-        """Update the dex stat of the entity."""
-        return self.baseStats['dex']     
+        return value, expected, exists  
 
     def to_primitive(self) -> Dict:
         """Convert the Entity object to a dictionary."""
@@ -79,7 +125,7 @@ class Entity:
             "label": self.label,
             "active": self.active,
             "imageName": self.imageName,
-            "baseStats": self.baseStats
+            "stats": copy.deepcopy(self.stats)
         }
 
     @staticmethod
@@ -93,5 +139,5 @@ class Entity:
             label=data.get("label"),
             active=data.get("active", False),
             imageName=data.get("imageName"),
-            baseStats=data.get("baseStats", {"hp": 0, "initiative": 0, "dex": 0})
+            stats=copy.deepcopy(data.get("stats", {"hp": 0, "initiative": 0, "dex": 0}))
         )

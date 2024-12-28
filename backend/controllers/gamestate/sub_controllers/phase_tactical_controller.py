@@ -86,7 +86,9 @@ class PhaseTacticalController:
         for instance_id in add_to_turn:
             entity_instance = gamestate.get_entity_instance(instance_id)
             entity = gamestate.get_entity(entity_instance.entityId)
-            score_val = self.generate_initiative_score_val(gamestate, entity_instance.get_initiative(), entity.get_dex())
+            instance_init, _, _ = entity_instance.get_stat("initiative")
+            entity_dex, _, _ = entity.get_stat("dex")
+            score_val = self.generate_initiative_score_val(gamestate, instance_init, entity_dex)
             gamestate.set_initiative_score(instance_id, score_val, 0, score_val)
 
         # regenerate turn order

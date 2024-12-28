@@ -1,8 +1,7 @@
 from typing import Dict, Optional
 from backend.modules.repository.repository import Repository
 from backend.models.entity import Entity
-from backend.models.entity_instance import EntityInstance
-from backend.models.entity_instance_view import EntityInstanceView
+from backend.models.entity_instance import EntityInstance, ENUMDisplayLevel
 from backend.controllers.party.party_controller import PartyController
 
 
@@ -27,15 +26,71 @@ class EntityController:
         nextid += 1
         self.last_entity_instance_id[party_id] = nextid
 
-        return str(nextid)            
+        return str(nextid)     
 
-    def create_entity_instance_from_entity(self, entity: Entity, partyId: str) -> EntityInstance:
-        instance_id = self.get_next_entity_instance_id(partyId)
+    def get_instance_by_display_level(self, entity_instance: EntityInstance, display_level: str, party_id: str) -> EntityInstance:
+        party = self.party_controller.get_party_by_id(party_id)
+        gamestate = party.get_gamestate()
+        entity = gamestate.get_entity(entity_instance.entityId)
+
+        primitive = entity_instance.to_primitive()
+        newInstance = EntityInstance.from_primitive(primitive)
+        newInstance.display_level = display_level
+
+        if display_level == ENUMDisplayLevel.COMPLETE.value:
+            return newInstance
+        
+        if display_level == ENUMDisplayLevel.TACTICAL.value:
+            return newInstance
+        
+        if display_level == ENUMDisplayLevel.IMMERSIVE.value:
+            hpPerc = 0
+            hpCat = 0
+
+            if newInstance.stats["hp"] == entity.stats["hp"]:
+                hpCat = 4
+
+            elif newInstance.stats["hp"] > 0:
+                hpPerc = 100 * newInstance.stats["hp"] / entity.stats["hp"]
+                print("perc: " + str(hpPerc))
+
+                if hpPerc <= entity_instance.healthPoint1:
+                    hpCat = 1
+                elif hpPerc <= entity_instance.healthPoint2:
+                    hpCat = 2
+                else:
+                    hpCat = 3
+
+            newInstance.stats["hp"] = hpCat
+            newInstance.healthPoint1 = 0
+            newInstance.healthPoint2 = 0
+
+            return newInstance
+
+        if display_level == ENUMDisplayLevel.MINIMUM.value:
+            if newInstance.stats["hp"] > 0:
+                newInstance.stats["hp"] = 1
+            else:
+                newInstance.stats["hp"] = 0
+
+            return newInstance
+
+        if display_level == ENUMDisplayLevel.INCOGNITO.value:
+            if newInstance.stats["hp"] > 0:
+                newInstance.stats["hp"] = 1
+            else:
+                newInstance.stats["hp"] = 0
+            newInstance.label = ""
+
+            return newInstance
+
+    def create_entity_instance_from_entity(self, entity: Entity, party_id: str) -> EntityInstance:
+        instance_id = self.get_next_entity_instance_id(party_id)
         instance = EntityInstance(instance_id, entity.entityId)
 
-        instance.set_hp(entity.baseStats["hp"])
+        instance.stats["hp"] = entity.stats["hp"]
+        instance.stats["initiative"] = entity.stats["initiative"]
         instance.label = entity.label
-        instance.set_initiative(entity.get_initiative())
 
         return instance
     
@@ -44,4 +99,6 @@ class EntityController:
         gamestate = party.get_gamestate()
         entity_instance = gamestate.get_entity_instance(instance_id)
         entity = gamestate.get_entity(entity_instance.entityId)
+
         return entity
+

@@ -1,13 +1,27 @@
 from enum import Enum
 import random
 from typing import Dict, List, Optional
+import copy
 
 class ENUMDisplayLevel(Enum):
     COMPLETE = "complete" # Full resource and stats sheet disclosure
     TACTICAL = "tactical" # Numerical HP values, name, conditions
     IMMERSIVE = "immersive" # Categorical HP values, name, conditions        
     MINIMUM = "minimum" # No HP. Just name and conditions
-    INCOGNITO = "incognito" # No HP, no picture, no name, just the existance
+    INCOGNITO = "incognito" # No HP, no picture, no name/label, just the existance
+
+ExpectedStats = {
+    "hp": True,
+    "temp_hp": True,
+    "initiative": True,
+    "death_rolls_successes": True,
+    "death_rolls_fails": True,
+    "group": True,
+    "visible": True,
+    "perception": True,
+    "insight": True,
+    "investigaton": True,
+}
 
 class EntityInstance:
     def __init__(self, instanceId: str, entityId: str):
@@ -22,10 +36,13 @@ class EntityInstance:
             'initiative': 0, # Rolled initative, with the dex mod 
             'death_rolls_successes': 0,
             'death_rolls_fails': 0,
-            'ally': False,
-            'visible': True,
-            'conditions': []  # List of conditions (represented as dicts)
+            'group': 0,
+            'visible': 1,
+            'perception': 0,
+            'insight': 0,
+            'investigaton': 0,
         }
+        self.conditions: List[Dict] = []
 
         self.seed: int = random.randint(0, 100)  # Random number between 0 and 100
         self.healthPoint1: int = random.randint(20, 45)  # Random number between 20 and 45
@@ -43,66 +60,59 @@ class EntityInstance:
         return self._entityId
 
     # Getters for base stats
-    def get_hp(self) -> int:
-        """Get the hp stat of the entityInstance."""
-        return self.stats["hp"]
+    def set_stat(self, statName: str, value: any) -> tuple[any, bool, bool]:
+        """Set Any Stat, returns curr value, exptected, and success state"""
+        expected = ExpectedStats.get(statName, False)
+        
+        self.stats[statName] = value
+        return value, expected, True
 
-    def new_temp_hp(self) -> int:
-        """Get the temp_hp stat of the entityInstance."""
-        return self.stats["temp_hp"]
+    def add_stat(self, statName: str, value: any) -> tuple[any, bool, bool]:
+        """Add to a stat, returns new value, exptected, and success state"""
+        expected = ExpectedStats.get(statName, False)
 
-    def get_initiative(self) -> int:
-        """Get the initiative stat of the entityInstance."""
-        return self.stats["initiative"]
+        currValue = self.stats.get(statName, 0)
+        newValue = currValue
 
-    def get_ally(self) -> bool:
-        """Check if the entityInstance is an ally."""
-        return self.stats["ally"]
-
-    def get_visible(self) -> bool:
-        """Check if the entityInstance is visible."""
-        return self.stats["visible"]
+        try:
+            newValue += value
+        except TypeError:
+            return 0, expected, False
+        
+        self.stats[statName] = newValue
+        return newValue, expected, True
     
-    def get_death_rolls(self) -> tuple[int, int]:
-        return self.stats["death_rolls_successes"], self.stats["death_rolls_fails"]    
+    def get_stat(self, statName: str) -> tuple[any, bool, bool]:
+        """Get Any Stat, returns curr value, exptected, and existing state"""
+        expected = ExpectedStats.get(statName, False)
 
-    # Setters for base stats
-    def set_hp(self, new_hp: int):
-        """Update the hp stat of the entityInstance."""
-        self.stats["hp"] = new_hp
-
-    def set_temp_hp(self, new_temp_hp: int):
-        """Update the temp_hp stat of the entityInstance."""
-        self.stats["temp_hp"] = new_temp_hp
-
-    def set_initiative(self, new_initiative: int):
-        """Update the initiative stat of the entityInstance."""
-        self.stats["initiative"] = new_initiative
-
-    def set_ally(self, ally: bool):
-        """Update whether the entityInstance is an ally."""
-        self.stats["ally"] = ally
-
-    def set_visible(self, visible: bool):
-        """Update the visibility of the entityInstance."""
-        self.stats["visible"] = visible
-
-    def inc_death_rolls(self, success: bool) -> bool:
-        if success == True:
-            self.stats["death_rolls_successes"] += 1
+        value = self.stats.get(statName)
+        if value:
+            exists = True
         else:
-            self.stats["death_rolls_fails"] += 1
+            exists = False
+            value = 0
+
+        return value, expected, exists
 
     # Methods to manage conditions
     def add_condition(self, condition: Dict):
         """Add a condition to the entityInstance."""
-        self.stats["conditions"].append(condition)
+        self.conditions.append(condition)
 
     def remove_condition(self, conditionId: str):
         """Remove a condition from the entityInstance by conditionId."""
-        self.stats["conditions"] = [
-            cond for cond in self.stats["conditions"] if cond["conditionId"] != conditionId
+        self.conditions = [
+            cond for cond in self.conditions if cond["conditionId"] != conditionId
         ]
+
+    # Get Display Level
+    def get_displayLevel(self) -> ENUMDisplayLevel:
+        return self.display_level
+
+    # Get Label
+    def get_label(self) -> str:
+        return self.label
 
     # Convert to a primitive dictionary
     def to_primitive(self) -> Dict:
@@ -112,7 +122,8 @@ class EntityInstance:
             "entityId": self._entityId,
             "playerId": self.playerId,
             "label": self.label,
-            "stats": self.stats,
+            "stats": copy.deepcopy(self.stats),
+            "conditions": copy.deepcopy(self.conditions),
             "seed": self.seed,
             "healthPoint1": self.healthPoint1,
             "healthPoint2": self.healthPoint2,
@@ -130,7 +141,8 @@ class EntityInstance:
 
         entityInstance.playerId = data.get("playerId", entityInstance.playerId)
         entityInstance.label = data.get("label", entityInstance.label)
-        entityInstance.stats = data.get("stats", entityInstance.stats)
+        entityInstance.stats = copy.deepcopy(data.get("stats", entityInstance.stats))
+        entityInstance.conditions = copy.deepcopy(data.get("conditions", entityInstance.conditions))
         entityInstance.seed = data.get("seed", entityInstance.seed) 
         entityInstance.healthPoint1 = data.get("healthPoint1", entityInstance.healthPoint1)
         entityInstance.healthPoint2 = data.get("healthPoint2", entityInstance.healthPoint2)
