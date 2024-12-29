@@ -1,7 +1,6 @@
 from typing import Dict, List, Optional
 from backend.models.entity import Entity
 from backend.models.entity_instance import EntityInstance
-from backend.models.entity_instance_view import EntityInstanceView
 from backend.models.vfx import Vfx
 
 class GamestateView:
@@ -11,7 +10,6 @@ class GamestateView:
         self.partyName: str = partyName
         self.entities: Dict[str, Entity] = {}  # Map of entityId to Entity objects based on access level
         self.entityInstances: Dict[str, EntityInstance] = {}  # Map of instanceId to EntityInstance objects based on access level
-        self.entityInstanceViews: Dict[str, EntityInstanceView] = {}  # Map of instanceViewId to EntityInstanceView objects
         self.phase: str = 'inactive'  # Default phase is inactive
         self.inactive: Dict[str, Optional[str]] = {'title': None}
         self.tactical: Dict[str, List[str]] = {
@@ -50,20 +48,6 @@ class GamestateView:
     def get_entity_instance(self, instanceId: str) -> Optional[EntityInstance]:
         """Get an EntityInstance object from the gamestateView."""
         return self.entityInstances.get(instanceId, None)
-
-    # EntityInstanceView Management
-    def add_entity_instance_view(self, instanceViewId: str, entityInstanceView: EntityInstanceView):
-        """Add an EntityInstanceView object to the gamestateView."""
-        self.entityInstanceViews[instanceViewId] = entityInstanceView
-
-    def remove_entity_instance_view(self, instanceViewId: str):
-        """Remove an EntityInstanceView object from the gamestateView."""
-        if instanceViewId in self.entityInstanceViews:
-            del self.entityInstanceViews[instanceViewId]
-
-    def get_entity_instance_view(self, instanceViewId: str) -> Optional[EntityInstanceView]:
-        """Get an EntityInstanceView object from the gamestateView."""
-        return self.entityInstanceViews.get(instanceViewId, None)
 
     # Phase Management
     def set_phase(self, new_phase: str):
@@ -142,7 +126,6 @@ class GamestateView:
         )
         gamestateView.entities = {entityId: Entity.from_primitive(entity_data) for entityId, entity_data in data.get("entities", {}).items()}
         gamestateView.entityInstances = {instanceId: EntityInstance.from_primitive(instance_data) for instanceId, instance_data in data.get("entityInstances", {}).items()}
-        gamestateView.entityInstanceViews = {instanceViewId: EntityInstanceView.from_primitive(instanceView_data) for instanceViewId, instanceView_data in data.get("entityInstanceViews", {}).items()}
         gamestateView.phase = data["phase"]
         gamestateView.inactive = data["inactive"]
         gamestateView.tactical = data["tactical"]

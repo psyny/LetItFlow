@@ -21,8 +21,6 @@ class Command:
         REMOVE_FROM_TURN_ORDER = "remove_from_turn_order"
         CHANGE_TURN_ORDER = "change_from_turn_order"
 
-        
-
 
     def __init__(self, commandType: str):
         """Initialize the Action object with immutable actionId."""

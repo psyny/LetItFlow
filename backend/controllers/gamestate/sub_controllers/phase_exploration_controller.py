@@ -42,6 +42,7 @@ class PhaseExplorationController:
     # ----------------------------------------
     # Add/remove instance to exploration
     # ----------------------------------------
+    
     def is_in_exploration(self, gamestate: Gamestate, instance_id: str) -> bool:
         return instance_id in gamestate.exploration['in_exploration']
     

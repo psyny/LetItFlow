@@ -11,6 +11,13 @@ from backend.modules.command_executor.basic_commands.add_to_turn_order import ad
 from backend.modules.command_executor.basic_commands.remove_from_turn_order import remove_from_turn_order
 from backend.modules.command_executor.basic_commands.change_turn_order import change_turn_order
 
+from backend.modules.command_executor.basic_commands.add_to_exploration import add_to_exploration
+from backend.modules.command_executor.basic_commands.remove_from_exploration import remove_from_exploration
+from backend.modules.command_executor.basic_commands.add_place import add_place
+from backend.modules.command_executor.basic_commands.remove_place import remove_place
+from backend.modules.command_executor.basic_commands.add_to_place import add_to_place
+from backend.modules.command_executor.basic_commands.remove_from_place import remove_from_place
+
 commandCallMap = {
     Command.Type.CHANGE_GAMESTATE_PHASE.value: change_gamestate_phase,
 
@@ -19,6 +26,13 @@ commandCallMap = {
     Command.Type.ADD_TO_TURN_ORDER.value: add_to_turn_order,
     Command.Type.REMOVE_FROM_TURN_ORDER.value: remove_from_turn_order,
     Command.Type.CHANGE_TURN_ORDER.value: change_turn_order,
+
+    Command.Type.ADD_TO_EXPLORATION.value: add_to_exploration,
+    Command.Type.REMOVE_FROM_EXPLORATION.value: remove_from_exploration,
+    Command.Type.ADD_PLACE.value: add_place,
+    Command.Type.REMOVE_PLACE.value: remove_place,
+    Command.Type.ADD_TO_PLACE.value: add_to_place,
+    Command.Type.REMOVE_FROM_PLACE.value: remove_from_place,
     }
 
 class CommandExecutor:
