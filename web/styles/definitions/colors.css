@@ -1,0 +1,10 @@
+:root {
+    --text-body-passive: rgba(0, 0, 0, 0);
+    --text-label-passive: rgba(0, 0, 0, 0);
+
+    --button-bg-passive: rgba(0, 0, 0, 0.8);
+    --button-bg-hover: rgb(24 42 66 / 80%);
+    --button-label-passive: rgba(255, 255, 255, 0.99);
+    --button-label-hover: rgba(255, 255, 255, 0.99);
+
+}

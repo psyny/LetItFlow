@@ -1,4 +1,5 @@
 import hashlib
+import uuid
 
 from backend.modules.repository.repository import Repository
 from backend.libs.psn.filemanager.filemanager import FileManager
@@ -8,6 +9,7 @@ class CredentialsController:
         """Initialize the CredentialsController with a given Repository instance."""
         self.repository: Repository = repository  # Strongly type the repository instance
         self.credentials_map: dict[str, str] = {}  # Holds playerId -> hashed playerKey
+        self.tokens: dict[str, str] = {}
         self._load_credentials()
 
     def _load_credentials(self):
@@ -49,3 +51,21 @@ class CredentialsController:
 
         # Store the updated credentials back into the Repository
         self.repository.save_credentials(playerId, hashed_new_key)
+
+    def token_generate(self, playerId: str) -> str:
+        unique_id = str(uuid.uuid4())
+        self.tokens[playerId] = unique_id
+        return unique_id
+
+    def token_validate(self, token: str):
+        return self.tokens.get(token, None)
+
+    def player_exists(self, playerId: str):
+        """Check if player exists."""
+
+        hasPlayerId = self.credentials_map.get(playerId)
+
+        if hasPlayerId:
+            return True
+        else:
+            return False

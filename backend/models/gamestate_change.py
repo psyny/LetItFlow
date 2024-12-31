@@ -21,6 +21,11 @@ class GamestateChange:
         REMOVED_FROM_TURN_ORDER = "removed_from_turn_order"
         CHANGED_IN_TURN_ORDER = "changed_in_turn_order"
 
+        # Instances
+        INSTANCE_STAT_CHANGED = "instance_stat_changed"
+        INSTANCE_CONDITION_CHANGED = "instance_condition_changed"
+        
+
     def __init__(self, changeId: str, changeType: str):
         """Initialize the Action object with immutable actionId."""
         self._changeId = changeId  # Change ID is fixed and immutable

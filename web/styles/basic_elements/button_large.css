@@ -1,0 +1,67 @@
+.button-large {
+    display: flex;
+    position: relative;
+    width: 100%;
+    margin: 10px 0; /* Example spacing, adjust as needed */
+    --background-color: blue;
+    height: 40px;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-large .button-bg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    cursor: pointer;
+
+    background: var(--button-bg-passive);
+    border-radius: 15px;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.5);
+
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    border-top: 1px solid rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+
+    backdrop-filter: blur(20px);
+
+    transition: all 0.2s ease;
+
+    z-index: 1;
+}
+
+.button-large:hover .button-bg{
+    background: var(--button-bg-hover);
+    border: 1px solid rgba(36, 45, 57, 0.8);
+}
+
+.button-large .button-label{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    pointer-events: none;
+
+    border-radius: 20px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--button-label-passive);
+
+    z-index: 6;
+}
+
+.button-large:hover .button-label{
+    color: var(--button-label-hover);
+}

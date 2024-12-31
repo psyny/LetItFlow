@@ -18,6 +18,10 @@ from backend.modules.command_executor.basic_commands.remove_place import remove_
 from backend.modules.command_executor.basic_commands.add_to_place import add_to_place
 from backend.modules.command_executor.basic_commands.remove_from_place import remove_from_place
 
+from backend.modules.command_executor.basic_commands.instance_stat_change import instance_stat_change
+from backend.modules.command_executor.basic_commands.instance_condition_change import instance_condition_change
+
+
 commandCallMap = {
     Command.Type.CHANGE_GAMESTATE_PHASE.value: change_gamestate_phase,
 
@@ -33,6 +37,9 @@ commandCallMap = {
     Command.Type.REMOVE_PLACE.value: remove_place,
     Command.Type.ADD_TO_PLACE.value: add_to_place,
     Command.Type.REMOVE_FROM_PLACE.value: remove_from_place,
+
+    Command.Type.INSTANCE_CHANGE_STAT.value: instance_stat_change,
+    Command.Type.INSTANCE_CHANGE_CONDITION.value: instance_condition_change,
     }
 
 class CommandExecutor:

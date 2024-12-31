@@ -138,21 +138,6 @@ entityInstance: object
 -- visible: bool: is the entity visible by the party?
 -- conditions: list of condition: conditions this entity has
 
-entityInstanceView: object
-def: represents how an entity is displayed on the front end.
-Exists because different front ends will receive different display data for the entities.
-entityInstanceView are not stored on any persistent database, they are just a view of a data.
-- entityDisplayId: string: id of this entityInstanceView
-- instanceId: string: id of instance this view refers to
-- name: string: displayed name
-- label: string: short label to easily identify, usually a number. Same as the entity by default
-- displayType: string: display type defines how the stats information are to be interpreted by the front end.
-- stats: object
--- hp: number: current hp value
--- tempHp: number: current temp hp
--- ally: bool: is the entity an ally of the party?
--- conditions: list of condition: conditions this entity has
-
 condition: object
 - conditionId: string: id of the condition
 - name: string: condition name
@@ -198,7 +183,7 @@ def: defines the access level of each player
 - admin: has full access to evertying in the system and everything a dungeonmaster can do.
 - dungeonmaster: has control over its party and create new parties. Can create players and attach them to his party. Can create entities, instances, etc. Has control over every entity in its party. Can add VFx, pass turn and change the game phase on the gamestate. And everything a player can do.
 - veteran: has control over the entities owned by itself. Can edit its data fields. Can do everything a rookie can do.
-- rookie: has control over the entityInstance owned by itself. Can edit its data fields. Can do everything a rookie can do.
+- rookie: has control over the entityInstance owned by itself. Can edit its data fields. Can do everything a spectator can do.
 - spectator: only view the game, can't control anything. 
 
 

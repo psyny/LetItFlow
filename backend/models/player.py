@@ -3,19 +3,38 @@ from enum import Enum
 
 class Player:
     class AcessLevel(Enum):
-        PLAYER = "player"
+        ADMIN = "admin"
         DUNGEONMASTER = "dungeonmaster"
         VETERAN = "veteran"
         ROOKIE = "rookie"
         SPECTATOR = "spectator"
         NONE = "none"
-    
+
+    access_level_level = {
+        AcessLevel.ADMIN.value: 100,
+        AcessLevel.DUNGEONMASTER.value: 90,
+        AcessLevel.VETERAN.value: 30,
+        AcessLevel.ROOKIE.value: 20,
+        AcessLevel.SPECTATOR.value: 10,
+        AcessLevel.NONE.value: 0,
+    }
+   
     def __init__(self, playerId: str, name: str):
         """Initialize the Player object with playerId and other fields."""
         self._playerId = playerId  # Player ID is fixed and immutable
         self.name: str = name
         self.active: bool = True
+        self.accessLevelDefault: str = "spectator"
         self.accessLevel: Dict[str, str] = {}  # Access level is a dictionary of partyId to access level
+
+    def accessLevelCompare(baseReference: str, comparingReference: str):
+        baseReferenceLevel = Player.access_level_level.get(baseReference)
+        if baseReferenceLevel == None:
+            return None
+        comparingReferenceLevel = Player.access_level_level.get(comparingReference)
+        if comparingReferenceLevel == None:
+            return None
+        return comparingReferenceLevel - baseReferenceLevel
 
     @property
     def playerId(self) -> str:
@@ -44,7 +63,8 @@ class Player:
             "playerId": self._playerId,
             "name": self.name,
             "active": self.active,
-            "accessLevel": self.accessLevel
+            "accessLevelDefault": self.accessLevelDefault,
+            "accessLevel": self.accessLevel,
         }
 
     @staticmethod
@@ -55,6 +75,7 @@ class Player:
             name=data.get("name",""),
         )
         player.active = data.get("active", player.active)
+        player.accessLevelDefault = data.get("accessLevelDefault", player.accessLevelDefault)
         player.accessLevel = data.get("accessLevel", player.accessLevel)
 
         return player

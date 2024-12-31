@@ -86,7 +86,7 @@ def create_mock_party1() -> Party:
     entity4.set_stat("dex", 3)
     gamestate.add_entity(entity4.entityId, entity4)        
 
-    # Add mock entities instnaces
+    # Add mock entities instances
     entityController = appController.entity_controller
 
     entity_instance_1 = entityController.create_entity_instance_from_entity(entity1, appController.partycontroller)

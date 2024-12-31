@@ -52,7 +52,6 @@ class EntityController:
 
             elif newInstance.stats["hp"] > 0:
                 hpPerc = 100 * newInstance.stats["hp"] / entity.stats["hp"]
-                print("perc: " + str(hpPerc))
 
                 if hpPerc <= entity_instance.healthPoint1:
                     hpCat = 1

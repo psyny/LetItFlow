@@ -57,7 +57,7 @@ class Gamestate:
     # EntityInstance Management
     def add_entity_instance(self, entityInstance: EntityInstance):
         """Add an EntityInstance object to the gamestate."""
-        self.entityInstances[entityInstance.entityId] = entityInstance
+        self.entityInstances[entityInstance.instanceId] = entityInstance
 
     def remove_entity_instance(self, instanceId: str):
         """Remove an EntityInstance object from the gamestate."""

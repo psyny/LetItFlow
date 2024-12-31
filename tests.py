@@ -6,6 +6,7 @@ from backend.test.controllers.gamestate_controller_exploration import TestGamest
 from backend.test.controllers.entity_controller import TestEntityController
 
 from backend.test.command.turn_order import TestCommandTurnOrder
+from backend.test.command.instance_stat_change import TestInstanceStatChange
 
 if __name__ == '__main__':
     unittest.main()

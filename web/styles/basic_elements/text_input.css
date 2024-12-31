@@ -1,0 +1,55 @@
+/* Input General Large Container */
+.input-general-large {
+    display: flex;
+    position: relative;
+    width: 100%;
+    margin: 10px 0; /* Example spacing, adjust as needed */
+    --background-color: blue;
+    height: 40px;
+}
+
+/* Text Input */
+.input-general-large .input-field {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: black; /* Adjust text color as needed */
+    font-size: 16px;
+    padding: 10px 0; /* Padding for space around text */
+    z-index: 2;
+}
+
+/* Label */
+.input-general-large .input-label {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.input-general-large .input-field:focus + .input-label,
+.input-general-large .input-field:not(:placeholder-shown) + .input-label {
+    top: 5px;
+    font-size: 12px;
+    color:rgba(0, 0, 0, 0.5);
+}
+
+/* Styling Div */
+.input-general-large .input-styling {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 0;
+}
